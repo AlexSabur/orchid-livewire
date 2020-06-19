@@ -16,6 +16,11 @@ Install via composer
 composer require livewire/livewire alexsabur/orchid-livewire
 ```
 
+Publish original assets livewire
+```bash
+php artisan vendor:publish --tag=livewire:assets
+```
+
 ### Publish package config
 
 ```bash
