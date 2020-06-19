@@ -13,7 +13,7 @@ use Orchid\Screen\TD;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    const CONFIG_PATH = __DIR__ . '/../config/orchid-livewire.php';
+    const CONFIG_PATH = __DIR__.'/../config/orchid-livewire.php';
 
     public function boot()
     {
@@ -54,8 +54,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function redisterLayoutMacro()
     {
         Layout::macro('livewire', function (string $component) {
-            return new class ($component) extends LivewireLayout
-            {
+            return new class($component) extends LivewireLayout {
             };
         });
 
@@ -66,7 +65,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         TD::macro('livewire', function (string $component, Closure $handler = null) {
             /** @var TD $this */
-
             $this->render(function ($source) use ($component, $handler) {
                 /** @var Repository|AsSource $source */
 
