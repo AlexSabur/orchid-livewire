@@ -2,7 +2,7 @@
 
 return [
     /**
-     * Push Livewire assets to 'platform::app'
+     * Push Livewire assets to 'platform::app'.
      */
     'assets' => true,
 
@@ -10,5 +10,5 @@ return [
         'scripts' => [],
 
         'styles' => [],
-    ]
+    ],
 ];
