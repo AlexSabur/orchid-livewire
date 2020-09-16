@@ -56,8 +56,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function redisterLayoutMacro()
     {
         LayoutFactory::macro('livewire', function (string $component) {
-            return new class ($component) extends LivewireLayout
-            {
+            return new class($component) extends LivewireLayout {
             };
         });
 
