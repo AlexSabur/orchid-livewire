@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AlexSabur\OrchidLivewire\Layouts;
 
 use Illuminate\Support\Arr;
-use Orchid\Screen\Layouts\Base;
+use Orchid\Screen\Layout;
 use Orchid\Screen\Repository;
 
-abstract class Livewire extends Base
+abstract class Livewire extends Layout
 {
     /**
      * @var string

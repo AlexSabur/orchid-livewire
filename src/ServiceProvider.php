@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace AlexSabur\OrchidLivewire;
 
 use AlexSabur\OrchidLivewire\Layouts\Livewire as LivewireLayout;
@@ -7,7 +9,7 @@ use Closure;
 use Illuminate\Support\Facades\View;
 use Livewire\Livewire;
 use Orchid\Screen\AsSource;
-use Orchid\Screen\Layout;
+use Orchid\Screen\LayoutFactory;
 use Orchid\Screen\Repository;
 use Orchid\Screen\TD;
 
@@ -53,8 +55,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     protected function redisterLayoutMacro()
     {
-        Layout::macro('livewire', function (string $component) {
-            return new class($component) extends LivewireLayout {
+        LayoutFactory::macro('livewire', function (string $component) {
+            return new class ($component) extends LivewireLayout
+            {
             };
         });
 
