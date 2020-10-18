@@ -86,7 +86,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                     'params' => $handler ? $handler($source) : [
                         str_replace('.', '', $this->name) => $source->getContent($this->name),
                     ],
-                    'key' => $key ? $key($source) : null
+                    'key' => $key ? $key($source) : null,
                 ]);
             });
 
