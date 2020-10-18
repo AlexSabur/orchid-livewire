@@ -58,7 +58,7 @@ abstract class Livewire extends Layout
             $params = Arr::except($params, $this->except);
         }
 
-        return view('livewire::mount-component', [
+        return view('orchid-livewire::mount-component', [
             'name' => $this->component,
             'params' => $params,
         ]);

@@ -21,11 +21,22 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->registerViewComposer()
             ->redisterTDMacro()
+            ->registerViews()
             ->redisterLayoutMacro();
 
         $this->publishes([
             self::CONFIG_PATH => config_path('orchid-livewire.php'),
         ], 'config');
+    }
+
+    protected function registerViews()
+    {
+        $this->loadViewsFrom(
+            __DIR__.DIRECTORY_SEPARATOR.'views',
+            'orchid-livewire'
+        );
+
+        return $this;
     }
 
     public function register()
@@ -65,16 +76,17 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     protected function redisterTDMacro()
     {
-        TD::macro('livewire', function (string $component, Closure $handler = null) {
+        TD::macro('livewire', function (string $component, Closure $handler = null, Closure $key = null) {
             /** @var TD $this */
-            $this->render(function ($source) use ($component, $handler) {
+            $this->render(function ($source) use ($component, $handler, $key) {
                 /** @var Repository|AsSource $source */
 
-                return view('livewire::mount-component', [
+                return view('orchid-livewire::mount-component', [
                     'name' => $component,
                     'params' => $handler ? $handler($source) : [
                         str_replace('.', '', $this->name) => $source->getContent($this->name),
                     ],
+                    'key' => $key ? $key($source) : null
                 ]);
             });
 
