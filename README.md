@@ -49,6 +49,8 @@ public function columns(): array
                 return [
                     'user' => $user
                 ];
+            }, function (User $user) {
+                return "td-user-{$user->id}";
             }),
     ];
 }
