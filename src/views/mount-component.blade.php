@@ -1,4 +1,4 @@
-@if(is_null($key))
+@isset($key)
     @livewire($name, $params)    
 @else
     @livewire($name, $params, key($key))    
