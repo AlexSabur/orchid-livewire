@@ -1,0 +1,13 @@
+{
+  "name": "orchid-livewire",
+  "private": true,
+  "scripts": {
+    "production": "mix --production"
+  },
+  "devDependencies": {
+    "laravel-mix": "^6.0.16"
+  },
+  "dependencies": {
+    "livewire-turbolinks": "github:livewire/turbolinks"
+  }
+}

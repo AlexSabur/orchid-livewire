@@ -12,21 +12,26 @@ use Orchid\Screen\AsSource;
 use Orchid\Screen\LayoutFactory;
 use Orchid\Screen\Repository;
 use Orchid\Screen\TD;
+use Orchid\Support\Facades\Dashboard;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     const CONFIG_PATH = __DIR__.'/../config/orchid-livewire.php';
+    const PUBLIC_PATH = __DIR__.'/../public';
 
     public function boot()
     {
         $this->registerViewComposer()
             ->redisterTDMacro()
+            ->registerResources()
             ->registerViews()
             ->redisterLayoutMacro();
 
-        $this->publishes([
-            self::CONFIG_PATH => config_path('orchid-livewire.php'),
-        ], 'config');
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                self::CONFIG_PATH => config_path('orchid-livewire.php'),
+            ], 'config');
+        }
     }
 
     protected function registerViews()
@@ -47,6 +52,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         );
     }
 
+    protected function registerResources()
+    {
+        Dashboard::addPublicDirectory('orchid-livewire', static::PUBLIC_PATH);
+
+        return $this;
+    }
+
     protected function registerViewComposer()
     {
         View::composer('platform::app', function (\Illuminate\View\View $view) {
@@ -58,6 +70,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                     ->startPush('scripts', Livewire::scripts($options['scripts']));
                 $view->getFactory()
                     ->startPush('stylesheets', Livewire::styles($options['styles']));
+            }
+            if ($config['turbolinks']) {
+                $view->getFactory()
+                    ->startPush('scripts', static::getTagScript());
             }
         });
 
@@ -94,5 +110,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         });
 
         return $this;
+    }
+
+    public static function getTagScript()
+    {
+        $src = orchid_mix('/js/livewire-turbolinks.js', 'orchid-livewire');
+
+        return "<script src=\"$src\" data-turbo-eval=\"false\"></script>";
     }
 }

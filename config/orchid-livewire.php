@@ -6,6 +6,11 @@ return [
      */
     'assets' => true,
 
+    /**
+     * Push livewire-turbolinks to 'platform::app'
+     */
+    'turbolinks' => true,
+
     'options' => [
         'scripts' => [],
 
