@@ -1,5 +1,5 @@
-@if(!isset($key))
-    @livewire($name, $params)    
+@isset($key)
+    @livewire($name, $params, key($key))
 @else
-    @livewire($name, $params, key($key))    
-@endif
+    @livewire($name, $params)
+@endisset
