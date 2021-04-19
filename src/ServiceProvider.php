@@ -5,24 +5,23 @@ declare(strict_types=1);
 namespace AlexSabur\OrchidLivewire;
 
 use AlexSabur\OrchidLivewire\Layouts\Livewire as LivewireLayout;
-use Closure;
 use Illuminate\Support\Facades\View;
 use Livewire\Livewire;
 use Orchid\Screen\AsSource;
+use Orchid\Screen\Cell;
 use Orchid\Screen\LayoutFactory;
 use Orchid\Screen\Repository;
-use Orchid\Screen\TD;
 use Orchid\Support\Facades\Dashboard;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    const CONFIG_PATH = __DIR__.'/../config/orchid-livewire.php';
-    const PUBLIC_PATH = __DIR__.'/../public';
+    const CONFIG_PATH = __DIR__ . '/../config/orchid-livewire.php';
+    const PUBLIC_PATH = __DIR__ . '/../public';
 
     public function boot()
     {
         $this->registerViewComposer()
-            ->redisterTDMacro()
+            ->redisterCellMacro()
             ->registerResources()
             ->registerViews()
             ->redisterLayoutMacro();
@@ -37,7 +36,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function registerViews()
     {
         $this->loadViewsFrom(
-            __DIR__.DIRECTORY_SEPARATOR.'views',
+            __DIR__ . DIRECTORY_SEPARATOR . 'views',
             'orchid-livewire'
         );
 
@@ -82,32 +81,70 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     protected function redisterLayoutMacro()
     {
-        LayoutFactory::macro('livewire', function (string $component) {
-            return new class($component) extends LivewireLayout {
-            };
-        });
+        LayoutFactory::macro(
+            'livewire',
+            /**
+             * @param string $component
+             * @param Closure|string|null $key
+             *
+             * @return LivewireLayout
+             */
+            function (string $component, $key = null) {
+                return new class($component, $key) extends LivewireLayout
+                {
+                };
+            }
+        );
 
         return $this;
     }
 
-    protected function redisterTDMacro()
+    protected function redisterCellMacro()
     {
-        TD::macro('livewire', function (string $component, Closure $handler = null, Closure $key = null) {
-            /** @var TD $this */
-            $this->render(function ($source) use ($component, $handler, $key) {
-                /** @var Repository|AsSource $source */
+        Cell::macro(
+            'livewire',
+            /**
+             * @param string $component
+             * @param Closure|string|null $name
+             * @param Closure|string|null $key
+             *
+             * @return static
+             */
+            function (string $component, $name = null, $key = null) {
+                /** @var Cell $this */
+                $this->render(function ($source) use ($component, $name, $key) {
+                    /** @var Repository|AsSource $source */
 
-                return view('orchid-livewire::mount-component', [
-                    'name' => $component,
-                    'params' => $handler ? $handler($source) : [
-                        str_replace('.', '', $this->name) => $source->getContent($this->name),
-                    ],
-                    'key' => $key ? $key($source) : null,
-                ]);
-            });
+                    if (is_string($name)) {
+                        $params = [$name => $source];
+                    } elseif (is_callable($name)) {
+                        $params = $name($source);
+                    } else {
+                        $params = [
+                            str_replace('.', '', $this->name) => $source->getContent($this->name),
+                        ];
+                    }
 
-            return $this;
-        });
+                    if (is_string($key)) {
+                        $key = $source->getContent($key);
+                    } elseif (is_callable($key)) {
+                        $key = $key($source);
+                    } else {
+                        $key = null;
+                    }
+
+                    $view = view('orchid-livewire::mount-component', [
+                        'name' => $component,
+                        'params' => $params,
+                        'key' => $key,
+                    ]);
+
+                    return $view->render();
+                });
+
+                return $this;
+            }
+        );
 
         return $this;
     }
