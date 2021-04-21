@@ -16,12 +16,12 @@ Install via composer
 composer require livewire/livewire alexsabur/orchid-livewire
 ```
 
-Publish original assets livewire
+Publish original assets livewire (optional)
 ```bash
 php artisan vendor:publish --tag=livewire:assets
 ```
 
-### Publish package config
+Publish package config (optional)
 
 ```bash
 php artisan vendor:publish --provider="AlexSabur\OrchidLivewire\ServiceProvider"
@@ -29,7 +29,7 @@ php artisan vendor:publish --provider="AlexSabur\OrchidLivewire\ServiceProvider"
 
 ## Usage
 
-### For Table
+### For Table and Sight
 
 ```php
 /**
@@ -44,14 +44,20 @@ public function columns(): array
             ->filter(TD::FILTER_TEXT)
             ->livewire('user.pool-status'),
 
+        // livewire will send an "email" with the key "email"
+        TD::set('email', __('email'))
+            ->livewire('user-email', key: fn (User $user) => "td-user-email-{$user->id}"),
+
+        // livewire will be passed the model under the key 'user'
+        TD::set('some_data', __('some data'))
+            ->livewire('some-component', 'user', fn (User $user) => "td-some-data-{$user->id}"),
+
         TD::set('id', __('ID'))
             ->livewire('user.id', function (User $user) {
                 return [
                     'user' => $user
                 ];
-            }, function (User $user) {
-                return "td-user-{$user->id}";
-            }),
+            }, fn (User $user) => "td-user-{$user->id}"),
     ];
 }
 ```
@@ -67,11 +73,20 @@ public function columns(): array
 public function layout(): array
 {
     return [
+        // With only user and role from query
         Layout::livewire('user.pay-status')
-            ->only(['user', 'role']), // only user and role from query
+            ->only(['user', 'role']),
+
+        // With except role from query
         Layout::livewire('foo')
-            ->except('role'), // except role from query
-        Layout::livewire('baz'), // all from query
+            ->except('role'),
+
+        // Without data from query
+        Layout::livewire('baz')
+            ->empty(),
+
+        // With all from query
+        Layout::livewire('baz'),
     ];
 }
 ```
