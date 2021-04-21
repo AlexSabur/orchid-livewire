@@ -16,8 +16,8 @@ use Orchid\Support\Facades\Dashboard;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    const CONFIG_PATH = __DIR__ . '/../config/orchid-livewire.php';
-    const PUBLIC_PATH = __DIR__ . '/../public';
+    const CONFIG_PATH = __DIR__.'/../config/orchid-livewire.php';
+    const PUBLIC_PATH = __DIR__.'/../public';
 
     public function boot()
     {
@@ -37,7 +37,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     protected function registerViews()
     {
         $this->loadViewsFrom(
-            __DIR__ . DIRECTORY_SEPARATOR . 'views',
+            __DIR__.DIRECTORY_SEPARATOR.'views',
             'orchid-livewire'
         );
 
@@ -91,8 +91,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
              * @return LivewireLayout
              */
             function (string $component, $key = null) {
-                return new class($component, $key) extends LivewireLayout
-                {
+                return new class($component, $key) extends LivewireLayout {
                 };
             }
         );
@@ -115,7 +114,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 /** @var Cell $this */
                 $this->render(function ($source) use ($component, $name, $key) {
                     /** @var Repository|AsSource $source */
-
                     if (is_string($name)) {
                         $params = [$name => $source];
                     } elseif (is_callable($name)) {

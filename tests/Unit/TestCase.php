@@ -2,16 +2,16 @@
 
 namespace Tests\Unit;
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
 use AlexSabur\OrchidLivewire\ServiceProvider;
-use Orchid\Platform\Providers\PlatformServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Livewire\Livewire;
 use Livewire\LivewireServiceProvider;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 use Orchid\Platform\Models\User;
 use Orchid\Platform\Providers\FoundationServiceProvider;
+use Orchid\Platform\Providers\PlatformServiceProvider;
 use Tests\Components\BarBazComponent;
 use Tests\Components\UserComponent;
 use Tests\Components\UserEmailComponent;
@@ -29,7 +29,7 @@ class TestCase extends BaseTestCase
         $this->afterApplicationCreated(function () {
             Artisan::call('view:clear');
 
-            if (!File::exists(app_path('Http/Livewire'))) {
+            if (! File::exists(app_path('Http/Livewire'))) {
                 File::makeDirectory(app_path('Http/Livewire'), 0755, true);
             }
         });
@@ -46,7 +46,7 @@ class TestCase extends BaseTestCase
         Factory::guessFactoryNamesUsing(function ($factory) {
             $factoryBasename = class_basename($factory);
 
-            return "Tests\Factories\\$factoryBasename" . 'Factory';
+            return "Tests\Factories\\$factoryBasename".'Factory';
         });
 
         Livewire::component('tests.components.user-component', UserComponent::class);
@@ -82,7 +82,7 @@ class TestCase extends BaseTestCase
             LivewireServiceProvider::class,
             FoundationServiceProvider::class,
             PlatformServiceProvider::class,
-            ServiceProvider::class
+            ServiceProvider::class,
         ];
     }
 }

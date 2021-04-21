@@ -56,13 +56,13 @@ abstract class Livewire extends Layout
      */
     public function build(Repository $repository)
     {
-        if (!$this->isSee()) {
+        if (! $this->isSee()) {
             return;
         }
 
         $params = [];
 
-        if (!$this->empty) {
+        if (! $this->empty) {
             $params = $repository->toArray();
 
             if (count($this->only)) {
