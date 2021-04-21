@@ -4,15 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit;
 
-use Livewire\Component;
-use Livewire\Livewire;
-use Orchid\Platform\Models\User;
 use Orchid\Screen\Repository;
-use Orchid\Screen\Sight;
-use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
-use Tests\Unit\Components\BarBazComponent;
-use Tests\Unit\Components\UserComponent;
 
 class LayoutTest extends TestCase
 {
@@ -37,8 +30,8 @@ class LayoutTest extends TestCase
 
         $view = (string) Layout::livewire('tests.components.bar-baz-component')->empty()->build($data);
 
-        $this->assertStringContainsString("bar: null;", $view);
-        $this->assertStringContainsString("baz: null;", $view);
+        $this->assertStringContainsString('bar: null;', $view);
+        $this->assertStringContainsString('baz: null;', $view);
     }
 
     public function testOnly(): void
@@ -50,8 +43,8 @@ class LayoutTest extends TestCase
 
         $view = (string) Layout::livewire('tests.components.bar-baz-component')->only(['bar'])->build($data);
 
-        $this->assertStringContainsString("bar: i bazzz;", $view);
-        $this->assertStringContainsString("baz: null;", $view);
+        $this->assertStringContainsString('bar: i bazzz;', $view);
+        $this->assertStringContainsString('baz: null;', $view);
     }
 
     public function testExcept(): void
@@ -63,7 +56,7 @@ class LayoutTest extends TestCase
 
         $view = (string) Layout::livewire('tests.components.bar-baz-component')->except(['bar'])->build($data);
 
-        $this->assertStringContainsString("bar: null;", $view);
-        $this->assertStringContainsString("baz: i love bar;", $view);
+        $this->assertStringContainsString('bar: null;', $view);
+        $this->assertStringContainsString('baz: i love bar;', $view);
     }
 }
