@@ -11,6 +11,7 @@ use Orchid\Screen\AsSource;
 use Orchid\Screen\Cell;
 use Orchid\Screen\LayoutFactory;
 use Orchid\Screen\Repository;
+use Orchid\Screen\TD;
 use Orchid\Support\Facades\Dashboard;
 
 class ServiceProvider extends \Illuminate\Support\ServiceProvider
@@ -138,6 +139,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                         'params' => $params,
                         'key' => $key,
                     ]);
+
+                    if ($this instanceof TD) {
+                        return $view;
+                    }
 
                     return $view->render();
                 });
