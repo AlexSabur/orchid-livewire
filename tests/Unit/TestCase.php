@@ -8,11 +8,18 @@ use Orchid\Platform\Providers\PlatformServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
+use Livewire\Livewire;
 use Livewire\LivewireServiceProvider;
+use Orchid\Platform\Models\User;
 use Orchid\Platform\Providers\FoundationServiceProvider;
+use Tests\Components\BarBazComponent;
+use Tests\Components\UserComponent;
+use Tests\Components\UserEmailComponent;
 
 class TestCase extends BaseTestCase
 {
+    protected $user;
+
     protected function setUp(): void
     {
         $this->beforeApplicationDestroyed(function () {
@@ -29,7 +36,6 @@ class TestCase extends BaseTestCase
 
         parent::setUp();
 
-        /* Install application */
         $this->loadLaravelMigrations();
 
         $this->artisan('migrate', [
@@ -42,6 +48,12 @@ class TestCase extends BaseTestCase
 
             return "Tests\Factories\\$factoryBasename" . 'Factory';
         });
+
+        Livewire::component('tests.components.user-component', UserComponent::class);
+        Livewire::component('tests.components.user-email-component', UserEmailComponent::class);
+        Livewire::component('tests.components.bar-baz-component', BarBazComponent::class);
+
+        $this->user = User::factory()->make();
     }
 
     protected function getEnvironmentSetUp($app): void
@@ -62,20 +74,6 @@ class TestCase extends BaseTestCase
     public function makeACleanSlate()
     {
         Artisan::call('view:clear');
-
-        // File::makeDirectory($this->livewireViewsPath(), 0755, true);
-        // File::makeDirectory($this->livewireClassesPath(), 0755, true);
-        // File::makeDirectory($this->livewireTestsPath(), 0755, true);
-        // if (File::exists($this->livewireViewsPath())) {
-        // File::deleteDirectory($this->livewireViewsPath());
-        // }
-        // if (File::exists($this->livewireClassesPath())) {
-        // File::deleteDirectory($this->livewireClassesPath());
-        // }
-        // if (File::exists($this->livewireTestsPath())) {
-        // File::deleteDirectory($this->livewireTestsPath());
-        // }
-        // File::delete(app()->bootstrapPath('cache/livewire-components.php'));
     }
 
     protected function getPackageProviders($app)
@@ -86,25 +84,5 @@ class TestCase extends BaseTestCase
             PlatformServiceProvider::class,
             ServiceProvider::class
         ];
-    }
-
-    // protected function resolveApplicationHttpKernel($app)
-    // {
-    //     $app->singleton('Illuminate\Contracts\Http\Kernel', 'Tests\HttpKernel');
-    // }
-
-    protected function livewireClassesPath($path = '')
-    {
-        return realpath(app_path('Http/Livewire' . ($path ? '/' . $path : '')));
-    }
-
-    protected function livewireViewsPath($path = '')
-    {
-        return resource_path('views') . '/livewire' . ($path ? '/' . $path : '');
-    }
-
-    protected function livewireTestsPath($path = '')
-    {
-        return base_path('tests/Feature/Livewire' . ($path ? '/' . $path : ''));
     }
 }
