@@ -20,6 +20,11 @@ composer require livewire/livewire alexsabur/orchid-livewire:^4.0
 composer require livewire/livewire alexsabur/orchid-livewire:^3.0
 ```
 
+Publish orchid-livewire assets
+```bash
+php artisan vendor:publish --tag=orchid-livewire-assets
+```
+
 Publish original assets livewire (optional)
 ```bash
 php artisan vendor:publish --tag=livewire:assets
