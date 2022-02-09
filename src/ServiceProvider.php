@@ -12,9 +12,9 @@ use Orchid\Screen\Cell;
 use Orchid\Screen\LayoutFactory;
 use Orchid\Screen\Repository;
 use Orchid\Screen\TD;
-use Orchid\Support\Facades\Dashboard;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-class ServiceProvider extends \Illuminate\Support\ServiceProvider
+class ServiceProvider extends BaseServiceProvider
 {
     const CONFIG_PATH = __DIR__.'/../config/orchid-livewire.php';
     const PUBLIC_PATH = __DIR__.'/../public';
@@ -54,7 +54,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     protected function registerResources()
     {
-        Dashboard::addPublicDirectory('orchid-livewire', static::PUBLIC_PATH);
+        $this->publishes([
+            static::PUBLIC_PATH => public_path('vendor/orchid-livewire'),
+        ], ['orchid-livewire-assets', 'laravel-assets']);
 
         return $this;
     }
@@ -154,7 +156,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     public static function getTagScript()
     {
-        $src = orchid_mix('/js/livewire-turbolinks.js', 'orchid-livewire');
+        $src = mix('/js/livewire-turbolinks.js', 'vendor/orchid-livewire');
 
         return "<script src=\"$src\" data-turbo-eval=\"false\"></script>";
     }
