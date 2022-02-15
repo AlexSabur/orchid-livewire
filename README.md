@@ -13,6 +13,9 @@ Package description: A Livewire macro for Orchid Platform
 
 Install via composer
 ```bash
+# for Orchid 12
+composer require livewire/livewire alexsabur/orchid-livewire:^5.0
+
 # for Orchid 11
 composer require livewire/livewire alexsabur/orchid-livewire:^4.0
 
