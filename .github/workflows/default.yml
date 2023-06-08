@@ -13,6 +13,7 @@ jobs:
         os: [ubuntu-latest, windows-latest]
         laravel: [10.*]
         dependency-version: [prefer-lowest, prefer-stable]
+        include:
           - laravel: 10.*
             testbench: 8.*
 
