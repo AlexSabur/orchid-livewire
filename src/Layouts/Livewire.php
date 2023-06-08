@@ -39,7 +39,7 @@ abstract class Livewire extends Layout
     /**
      * Livewire constructor.
      *
-     * @param string $component
+     * @param  string  $component
      */
     public function __construct(string $component, $key = null)
     {
@@ -48,11 +48,10 @@ abstract class Livewire extends Layout
     }
 
     /**
-     * @param Repository $repository
+     * @param  Repository  $repository
+     * @return mixed
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
-     *
-     * @return mixed
      */
     public function build(Repository $repository)
     {
@@ -90,7 +89,7 @@ abstract class Livewire extends Layout
     }
 
     /**
-     * @param bool $value
+     * @param  bool  $value
      * @return $this
      */
     public function empty($value = true)
@@ -101,7 +100,7 @@ abstract class Livewire extends Layout
     }
 
     /**
-     * @param array|string $keys
+     * @param  array|string  $keys
      * @return $this
      */
     public function only($keys)
@@ -112,7 +111,7 @@ abstract class Livewire extends Layout
     }
 
     /**
-     * @param array|string $keys
+     * @param  array|string  $keys
      * @return $this
      */
     public function except($keys)
