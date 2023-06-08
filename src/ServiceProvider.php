@@ -6,13 +6,13 @@ namespace AlexSabur\OrchidLivewire;
 
 use AlexSabur\OrchidLivewire\Layouts\Livewire as LivewireLayout;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Livewire\Livewire;
 use Orchid\Screen\AsSource;
 use Orchid\Screen\Cell;
 use Orchid\Screen\LayoutFactory;
 use Orchid\Screen\Repository;
 use Orchid\Screen\TD;
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -87,9 +87,8 @@ class ServiceProvider extends BaseServiceProvider
         LayoutFactory::macro(
             'livewire',
             /**
-             * @param string $component
-             * @param Closure|string|null $key
-             *
+             * @param  string  $component
+             * @param  Closure|string|null  $key
              * @return LivewireLayout
              */
             function (string $component, $key = null) {
@@ -106,10 +105,9 @@ class ServiceProvider extends BaseServiceProvider
         Cell::macro(
             'livewire',
             /**
-             * @param string $component
-             * @param Closure|string|null $name
-             * @param Closure|string|null $key
-             *
+             * @param  string  $component
+             * @param  Closure|string|null  $name
+             * @param  Closure|string|null  $key
              * @return static
              */
             function (string $component, $name = null, $key = null) {
