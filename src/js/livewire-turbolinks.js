@@ -13,3 +13,14 @@ const observeDataSync = () => {
 }
 
 document.addEventListener('livewire:load', observeDataSync)
+
+function wireTurboBeforeStreamRender(event) {
+  const originalRender = event.detail.render
+
+  event.detail.render = async function (...args) {
+    await originalRender(...args)
+    window.Livewire.rescan()
+  }
+}
+
+document.addEventListener("turbo:before-stream-render", wireTurboBeforeStreamRender)
